@@ -16,4 +16,4 @@ def distance(a, b):
     print(distance)
 
 
-distance("Boston, MA", 'Washington, DC')
+distance("Kensington Palace", 'Washington, DC')
