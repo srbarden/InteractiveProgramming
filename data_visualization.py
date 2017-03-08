@@ -1,7 +1,6 @@
 import json
-import indicoio
-from indico_knock import Indico_KEY
-
+import pygame
+import datetime
 from geopy.distance import vincenty
 from geopy.geocoders import Nominatim
 
@@ -15,61 +14,30 @@ with open('hillary_data.json', 'r') as json_data:
 print(len(michelle_news))
 print(len(hillary_news))
 
-indicoio.config.api_key = Indico_KEY
-
-
-# print(michelle_news[0][3]['description'])
-# positive = [tweet for tweet in tweet_data if tweet['sentiment']['pos'] > 0]
-
-
-michelle_places = []
-# there are four main search_phrases
-for search_phrases in michelle_news:
-    # for each article in the results for each search phrase, checks if the
-    # the title contains the phrase "Michelle Obama"
-    for article in search_phrases:
-        if 'Michelle Obama' in article['title']:
-            # apply the indico place API to the title
-            # if there are results, keep the article
-            # print(article['title'])
-            place = indicoio.places(article['title'])
-            if len(place) > 0:
-                temp_dic = {}
-                temp_dic['title'] = article['title']
-                temp_dic['location'] = place[0]['text']
-                temp_dic['description'] = article['description']
-                temp_dic['date_pub'] = article['date_pub']
-                temp_dic['url'] = article['url']
-                michelle_places.append(temp_dic)
-
-print(len(michelle_places))
-
-print(michelle_places)
-# print(relevant[1]['description'])
-
-# sort list to show greatest location with highest confidence to location with lowest
-# sorted_locations = sorted(k, key=lambda k: k['confidence'], reverse=True)
-# print(sorted_locations)
-# j = indicoio.places("U.S. first lady Michelle Obama meets with the children ", threshold=0.01)
-# print(j)
-# print(j[0]['text'])
-# print(dir(indicoio))
-
-
-# --------------------- LOCATIONS into POINTS-----------------------
+michelle_news_sort = sorted(michelle_news, key=lambda article: article['date_pub'], reverse=False)
+hillary_news_sort = sorted(hillary_news, key=lambda article: article['date_pub'], reverse=False)
+# --------------------- ARTICLE INTO (TIME, PLACE)-----------------------
 michelle_points = []
-for dictionary in michelle_places:
-    place = michelle_places[dictionary[location]]
-    datetime = michelle_places[dictionary[date_pub]]
+for article in michelle_news_sort:
+    place = article['location']
+    datetime = article['date_pub']
     date = datetime[0:10]
     michelle_points.append((date, place))
+michelle_points2 = michelle_points[13:]
+print(michelle_points2)
 
 hillary_points = []
-for dictionary in michelle_places:
-    place = hillary_places[dictionary[location]]
-    datetime = hillary_places[dictionary[date_pub]]
+for article in hillary_news_sort:
+    place = article['location']
+    datetime = article['date_pub']
     date = datetime[0:10]
     hillary_points.append((date, place))
+print(hillary_points)
+
+# ------------------- FILLING IN MISSING POINTS ----------------------
+# Assume that when not traveling Hillary and Michelle were at the White House.
+
+
 
 # -------------------- GEOCODER --------------------------------------
 def distance(a, b):
@@ -86,6 +54,7 @@ def distance(a, b):
     print(distance)
 
 # -------------DIST B/T HILLARY AND MICHELLE---------------------
+
 
 distance("Kensington Palace", 'Washington, DC')
 
@@ -127,7 +96,6 @@ def make_figure():
 # --------- DRAWING LINES AND POINTS--------------------------------
         for key in distances12:
             dist12 = distances12[key]
-            dist23 = distances23[key]
 
             point1 = mid - 0.5*dist12
             point2 = mid + 0.5*dist12
@@ -138,23 +106,23 @@ def make_figure():
             pointlist1.append((key*150, point1))
             pointlist2.append((key*150, point2))
 
-        pygame.draw.lines(screen, red, False, pointlist1, 2)
-        pygame.draw.lines(screen, green, False, pointlist2, 2)
+        pygame.draw.lines(figure, red, False, pointlist1, 2)
+        pygame.draw.lines(figure, green, False, pointlist2, 2)
 
-            if dist12 == 0:
-                meetings.append((key*150, mid))
+        if dist12 == 0:
+            meetings.append((key*150, mid))
 
         for point in meetings:
             pygame.draw.circle(figure, black, point, 10, 0)
 
         pygame.draw.lines(figure, red, False, pointlist1, 5)
         pygame.draw.lines(figure, green, False, pointlist2, 5)
-    # -------------------- MOUSE EVENT ----------------------
+
+# -------------------- MOUSE EVENT ----------------------
         p = pygame.mouse.get_pos()
         for point in meetings:
-
-        if p in meetings:
-            figure.fill(black)
+            if p in meetings:
+                figure.fill(black)
 
         pygame.display.update()
 
