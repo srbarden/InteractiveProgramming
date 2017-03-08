@@ -5,10 +5,10 @@ from geopy.distance import vincenty
 from geopy.geocoders import Nominatim
 
 # ------------ DATA MINING --------------------
-with open('michelle_data.json', 'r') as json_data:
+with open('michelle_data2.json', 'r') as json_data:
     michelle_news = json.load(json_data)
 
-with open('hillary_data.json', 'r') as json_data:
+with open('hillary_data2.json', 'r') as json_data:
     hillary_news = json.load(json_data)
 
 print(len(michelle_news))
@@ -17,22 +17,26 @@ print(len(hillary_news))
 
 # --------------------- ARTICLE INTO (TIME, PLACE)-----------------------
 
+
 michelle_points = {}
-for article in michelle_news:
-    place = article['location']
-    fulldate = article['date_pub']
-    date = fulldate[0:10]
-    michelle_points[date] = place
+for phrase in michelle_news:
+    for article in phrase:
+        # print(article)
+        place = article['location']
+        fulldate = article['date_pub']
+        date = fulldate[0:10]
+        michelle_points[date] = place
 
 # print(michelle_points)
 
 hillary_points = {}
-for article in hillary_news:
-    place = article['location']
-    fulldate = article['date_pub']
-    date = fulldate[0:10]
-    hillary_points[date] = place
-# print(hillary_points)
+for phrase in hillary_news:
+    for article in phrase:
+        place = article['location']
+        fulldate = article['date_pub']
+        date = fulldate[0:10]
+        hillary_points[date] = place
+    # print(hillary_points)
 
 # ------------------- FILLING IN MISSING POINTS ----------------------
 # Assume that when not traveling Hillary and Michelle were at the White House.
