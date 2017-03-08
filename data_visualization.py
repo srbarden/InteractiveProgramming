@@ -14,32 +14,53 @@ with open('hillary_data.json', 'r') as json_data:
 print(len(michelle_news))
 print(len(hillary_news))
 
-michelle_news_sort = sorted(michelle_news, key=lambda article: article['date_pub'], reverse=False)
-hillary_news_sort = sorted(hillary_news, key=lambda article: article['date_pub'], reverse=False)
-# --------------------- ARTICLE INTO (TIME, PLACE)-----------------------
-michelle_points = []
-for article in michelle_news_sort:
-    place = article['location']
-    datetime = article['date_pub']
-    date = datetime[0:10]
-    michelle_points.append((date, place))
-michelle_points2 = michelle_points[13:]
-print(michelle_points2)
 
-hillary_points = []
-for article in hillary_news_sort:
+# --------------------- ARTICLE INTO (TIME, PLACE)-----------------------
+
+michelle_points = {}
+for article in michelle_news:
     place = article['location']
-    datetime = article['date_pub']
-    date = datetime[0:10]
-    hillary_points.append((date, place))
-print(hillary_points)
+    fulldate = article['date_pub']
+    date = fulldate[0:10]
+    michelle_points[date] = place
+
+# print(michelle_points)
+
+hillary_points = {}
+for article in hillary_news:
+    place = article['location']
+    fulldate = article['date_pub']
+    date = fulldate[0:10]
+    hillary_points[date] = place
+# print(hillary_points)
 
 # ------------------- FILLING IN MISSING POINTS ----------------------
 # Assume that when not traveling Hillary and Michelle were at the White House.
 
 
+def fillindates():
+    startdate = datetime.date(2012, 1, 1)
+    enddate = datetime.date(2016, 12, 1)
+    day = datetime.timedelta(days=1)
 
-# -------------------- GEOCODER --------------------------------------
+    date = startdate
+    while date <= enddate:
+        if date not in michelle_points:
+            date_pretty = date.isoformat()
+            michelle_points[date_pretty] = 'Washington, DC'
+        if date not in hillary_points:
+            date_pretty = date.isoformat()
+            hillary_points[date_pretty] = 'Washington, DC'
+        date += day
+
+    # michelle_points_sort = sorted(michelle_points, key=lambda x: x[0], reverse=False)
+    # hillary_points_sort = sorted(hillary_points, key=lambda x: x[0], reverse=False)
+
+    print(michelle_points)
+fillindates()
+
+
+# -------------------- GEOCODER -------------------------------------
 def distance(a, b):
     geolocator = Nominatim()
 
@@ -51,9 +72,11 @@ def distance(a, b):
     print(latlong_b)
 
     distance = vincenty(latlong_a, latlong_b).miles
-    print(distance)
+    return distance
 
 # -------------DIST B/T HILLARY AND MICHELLE---------------------
+
+distances = []
 
 
 distance("Kensington Palace", 'Washington, DC')
