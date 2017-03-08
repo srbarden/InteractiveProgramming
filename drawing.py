@@ -39,22 +39,22 @@ def draw():
         for key in distances12:
             dist12 = distances12[key]
             dist23 = distances23[key]
-            dist31 = distances31[key]
 
             point1 = mid - 0.5*dist12
             point2 = mid + 0.5*dist12
-            point3a = point1 - dist31
-            point3b = point2 + dist23
+
             pointlist1.append((key*150, point1))
             pointlist2.append((key*150, point2))
-            pointlist3a.append((key*150, point3a))
-            pointlist3b.append((key*150, point3b))
+
         pygame.draw.lines(screen, red, False, pointlist1, 2)
         pygame.draw.lines(screen, green, False, pointlist2, 2)
-        pygame.draw.lines(screen, blue, False, pointlist3a, 2)
-        pygame.draw.lines(screen, purple, False, pointlist3b, 2)
 
         pygame.display.update()
+
+    mouse_loc = pygame.mouse.get_pos()
+    if mouse_loc in pointlist1 or pointlist2:
+        print('hi')
+    # if event.type == pygame.MOUSEBUTTONDOWN:
 
 
 draw()
