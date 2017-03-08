@@ -33,12 +33,25 @@ def bing_search(query, name):
     # need to call the data in the right format
     for article in resp["value"]:
         if name in article['name']:
-            place = indicoio.places(article['name'])
+            title_place = indicoio.places(article['name'])
+            descrip_place = indicoio.places(article['description'])
+            sorted_locations = sorted(descrip_place,
+                                      key=lambda
+                                      descrip_place: descrip_place['confidence'],
+                                      reverse=True)
             # if there is content in the places, store it in a dic
-            if len(place) > 0:
+            if len(title_place) > 0:
                 temp_dic = {}
                 temp_dic['title'] = article['name']
-                temp_dic['location'] = place[0]['text']
+                temp_dic['location'] = title_place[0]['text']
+                temp_dic['description'] = article['description']
+                temp_dic['date_pub'] = article['datePublished']
+                temp_dic['url'] = article['url']
+                news.append(temp_dic)
+            elif len(sorted_locations) > 0:
+                temp_dic = {}
+                temp_dic['title'] = article['name']
+                temp_dic['location'] = sorted_locations[0]['text']
                 temp_dic['description'] = article['description']
                 temp_dic['date_pub'] = article['datePublished']
                 temp_dic['url'] = article['url']
@@ -62,17 +75,20 @@ hillary_phrases = ['"Hillary+Clinton+travels+to"',
                    '"Hillary+Clinton+arrives+to"'
                    '"Hillary+Clinton+arrvies+at"']
 
+michelle_data = []
 for phrase in michelle_phrases:
     michelle_results = bing_search(phrase, 'Michelle Obama')
-    # print(michelle_results)
+    michelle_data.append(michelle_results)
+    print(len(michelle_results))
 
+hillary_data = []
 for phrase in hillary_phrases:
     hillary_results = bing_search(phrase, 'Hillary Clinton')
-    # print(hillary_results)
+    hillary_data.append(hillary_results)
     print(len(hillary_results))
 
-with open('michelle_data.json', 'w') as outfile:
-    json.dump(michelle_results, outfile)
+with open('michelle_data2.json', 'w') as outfile:
+    json.dump(michelle_data, outfile)
 
-with open('hillary_data.json', 'w') as outfile:
-    json.dump(hillary_results, outfile)
+with open('hillary_data2.json', 'w') as outfile:
+    json.dump(hillary_data, outfile)
