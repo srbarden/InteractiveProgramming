@@ -39,12 +39,19 @@ def make_figure():
 # --------- DRAWING LINES AND POINTS--------------------------------
         for key in distances12:
             dist12 = distances12[key]
+            dist23 = distances23[key]
+
+            point1 = mid - 0.5*dist12
+            point2 = mid + 0.5*dist12
 
             point1 = mid - 0.5*dist12  # calculates points for person 1
             point2 = mid + 0.5*dist12  # calculates points for person 2
 
             pointlist1.append((key*150, point1))
             pointlist2.append((key*150, point2))
+
+        pygame.draw.lines(screen, red, False, pointlist1, 2)
+        pygame.draw.lines(screen, green, False, pointlist2, 2)
 
             if dist12 == 0:
                 meetings.append((key*150, mid))
@@ -63,6 +70,11 @@ def make_figure():
             figure.fill(black)
 
         pygame.display.update()
+
+    mouse_loc = pygame.mouse.get_pos()
+    if mouse_loc in pointlist1 or pointlist2:
+        print('hi')
+    # if event.type == pygame.MOUSEBUTTONDOWN:
 
 
 make_figure()
