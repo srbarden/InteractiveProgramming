@@ -160,12 +160,16 @@ def make_figure():
 # --------------------- CLASSES------------------------
 
 
-class TimeLine:
+class TimelineModel:
     '''
-    Encodes the display state
+    Encode the timeline display state
     '''
     def __init__(self):
-        pass
+        self.timelines = []
+        for x in range():
+            timeline = Line()
+            self.timeline.append(timeline)
+        self.meeting = Meeting()
 
 
 class Line:
@@ -194,10 +198,25 @@ class Meeting:
 
 class PyGameWindowView:
     '''
-    A view of the display rendered in a Pygame window
+    A view of the timeline display rendered in a Pygame window
     '''
     def __init__(self, model, screen):
-        pass
+        self.model = model
+        self.screen = screen
+
+    def draw(self):
+        self.screen.fill(pygame.Color(255, 255, 255))
+        for meeting in self.model.lines:
+
+
+    mid = int(height/2)
+
+
+    red = (200, 0, 0)
+    green = (0, 200, 0)
+    blue = (0, 0, 200)
+    white = (255, 255, 255)
+    black = (0, 0, 0)
 
 
 class PyGameMouseController:
@@ -208,4 +227,20 @@ class PyGameMouseController:
 
 if __name__ == '__main__':
     pygame.init()
-    size = ()
+    size = (1200, 800)
+    screen = pygame.display.set_mode(size)
+    model = TimelineModel()
+    view = PyGameWindowView(model, screen)
+    controller = PyGameMouseController(model)
+
+    running = True
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEMOTION:
+                controller.handle_mouse_event(event)
+        view.draw()
+
+    pygame.quit()
