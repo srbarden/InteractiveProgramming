@@ -36,7 +36,7 @@ for phrase in hillary_news:
         fulldate = article['date_pub']
         date = fulldate[0:10]
         hillary_points[date] = place
-    # print(hillary_points)
+print(hillary_points)
 
 # ------------------- FILLING IN MISSING POINTS ----------------------
 # Assume that when not traveling Hillary and Michelle were at the White House.
@@ -61,7 +61,9 @@ def fillindates():
     # hillary_points_sort = sorted(hillary_points, key=lambda x: x[0], reverse=False)
 
     print(michelle_points)
-fillindates()
+
+
+# fillindates()
 
 
 # -------------------- GEOCODER -------------------------------------
@@ -124,9 +126,6 @@ def make_figure():
         for key in distances12:
             dist12 = distances12[key]
 
-            point1 = mid - 0.5*dist12
-            point2 = mid + 0.5*dist12
-
             point1 = mid - 0.5*dist12  # calculates points for person 1
             point2 = mid + 0.5*dist12  # calculates points for person 2
 
@@ -158,5 +157,55 @@ def make_figure():
         print('hi')
     # if event.type == pygame.MOUSEBUTTONDOWN:
 
+# --------------------- CLASSES------------------------
 
-make_figure()
+
+class TimeLine:
+    '''
+    Encodes the display state
+    '''
+    def __init__(self):
+        pass
+
+
+class Line:
+    '''
+    Encodes the state of the line in the display
+    '''
+    def __init__(self, color, height, width, x, y):
+        self.color = color
+        self.height = height
+        self.width = width
+        self.x = x
+        self.y = y
+
+
+class Meeting:
+    '''
+    Encodes the state the meeting point circles in the game
+    '''
+    def __init__(self, color, height, width, x, y):
+        self.color = color
+        self.height = height
+        self.width = width
+        self.x = x
+        self.y = y
+
+
+class PyGameWindowView:
+    '''
+    A view of the display rendered in a Pygame window
+    '''
+    def __init__(self, model, screen):
+        pass
+
+
+class PyGameMouseController:
+    '''
+    Encodes the mouse controller for it to show meeting point
+    when mouse scrolls over it
+    '''
+
+if __name__ == '__main__':
+    pygame.init()
+    size = ()
