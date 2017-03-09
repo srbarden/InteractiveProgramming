@@ -144,7 +144,7 @@ def make_figure():
 
 # --------- DRAWING LINES AND POINTS--------------------------------
         for key in distances:
-            dist = 0.1*distances[key]  #scale down distances
+            dist = 0.1*distances[key]  # scale down distances
 
             point1 = mid - 0.5*dist
             point2 = mid + 0.5*dist
