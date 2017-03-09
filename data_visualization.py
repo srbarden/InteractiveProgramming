@@ -1,6 +1,7 @@
 import json
 import pygame
 import datetime
+from datetime import date
 from geopy.distance import vincenty
 from geopy.geocoders import Nominatim
 
@@ -11,12 +12,12 @@ with open('michelle_data2.json', 'r') as json_data:
 with open('hillary_data2.json', 'r') as json_data:
     hillary_news = json.load(json_data)
 
-print(len(michelle_news))
-print(len(hillary_news))
+# print(len(michelle_news))
+# print(len(hillary_news))
 
 
 # --------------------- ARTICLE INTO (TIME, PLACE)-----------------------
-
+# gets locations of Michelle and Hillary from all the data articles
 
 michelle_points = {}
 for phrase in michelle_news:
@@ -27,8 +28,6 @@ for phrase in michelle_news:
         date = fulldate[0:10]
         michelle_points[date] = place
 
-# print(michelle_points)
-
 hillary_points = {}
 for phrase in hillary_news:
     for article in phrase:
@@ -36,34 +35,36 @@ for phrase in hillary_news:
         fulldate = article['date_pub']
         date = fulldate[0:10]
         hillary_points[date] = place
-print(hillary_points)
 
+# print(michelle_points)
+# print(hillary_points)
 # ------------------- FILLING IN MISSING POINTS ----------------------
 # Assume that when not traveling Hillary and Michelle were at the White House.
 
 
-def fillindates():
-    startdate = datetime.date(2012, 1, 1)
-    enddate = datetime.date(2016, 12, 1)
-    day = datetime.timedelta(days=1)
+startdate = datetime.date(1990, 1, 1)
+enddate = datetime.date(2017, 3, 6)
+day = datetime.timedelta(days=1)
 
-    date = startdate
-    while date <= enddate:
-        if date not in michelle_points:
-            date_pretty = date.isoformat()
-            michelle_points[date_pretty] = 'Washington, DC'
-        if date not in hillary_points:
-            date_pretty = date.isoformat()
-            hillary_points[date_pretty] = 'Washington, DC'
-        date += day
-
-    # michelle_points_sort = sorted(michelle_points, key=lambda x: x[0], reverse=False)
-    # hillary_points_sort = sorted(hillary_points, key=lambda x: x[0], reverse=False)
-
-    print(michelle_points)
+date = startdate
+locations = {}
 
 
-# fillindates()
+#  print(hillary_points)
+while date < enddate:
+    date_pretty = date.isoformat()
+    if date_pretty not in michelle_points:
+        michelle_points[date_pretty] = 'Washington, DC'
+    if date_pretty not in hillary_points:
+        hillary_points[date_pretty] = 'Washington, DC'
+    date += day
+
+print(hillary_points['2016-05-13'])  # Brooklyn
+
+locations = {}
+for i in hillary_points:
+    print(hillary_points[i])
+    i, hillary_points[i], michelle_points[i])
 
 
 # -------------------- GEOCODER -------------------------------------
@@ -126,6 +127,9 @@ def make_figure():
         for key in distances12:
             dist12 = distances12[key]
 
+            point1 = mid - 0.5*dist12
+            point2 = mid + 0.5*dist12
+
             point1 = mid - 0.5*dist12  # calculates points for person 1
             point2 = mid + 0.5*dist12  # calculates points for person 2
 
@@ -156,6 +160,7 @@ def make_figure():
     if mouse_loc in pointlist1 or pointlist2:
         print('hi')
     # if event.type == pygame.MOUSEBUTTONDOWN:
+
 
 # --------------------- CLASSES------------------------
 #
@@ -245,3 +250,6 @@ def make_figure():
 #         view.draw()
 #
 #     pygame.quit()
+
+
+make_figure()
