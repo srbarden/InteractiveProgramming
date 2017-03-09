@@ -62,9 +62,9 @@ while date < enddate:
 print(hillary_points['2016-05-13'])  # Brooklyn
 
 locations = {}
-for i in hillary_points:
-    print(hillary_points[i])
-    i, hillary_points[i], michelle_points[i])
+# for i in hillary_points:
+#     print(hillary_points[i])
+
 
 
 # -------------------- GEOCODER -------------------------------------
@@ -97,6 +97,7 @@ def make_figure():
     height = 800
     mid = int(height/2)
     figure = pygame.display.set_mode((width, height))
+    menu_font = pygame.font.Font(None, 12)
 
     red = (200, 0, 0)
     green = (0, 200, 0)
@@ -143,7 +144,7 @@ def make_figure():
             meetings.append((key*150, mid))
 
         for point in meetings:
-            pygame.draw.circle(figure, black, point, 10, 0)
+            circle = pygame.draw.circle(figure, black, point, 10, 0)
 
         pygame.draw.lines(figure, red, False, pointlist1, 5)
         pygame.draw.lines(figure, green, False, pointlist2, 5)
@@ -151,7 +152,7 @@ def make_figure():
 # -------------------- MOUSE EVENT ----------------------
         p = pygame.mouse.get_pos()
         for point in meetings:
-            if p in meetings:
+            if p in circle:
                 figure.fill(black)
 
         pygame.display.update()
@@ -160,6 +161,34 @@ def make_figure():
     if mouse_loc in pointlist1 or pointlist2:
         print('hi')
     # if event.type == pygame.MOUSEBUTTONDOWN:
+
+    class Meeting:
+        hovered = False
+
+        def __init__(self, text, pos):
+            self.text = text
+            self.post = pos
+            self.set_button()
+            self.draw()
+
+        def draw(self):
+            self.set_rend()
+            screen.blit(self.rend, self.button)
+
+        def set_rend(self):
+            self.rend = menu_font.render(self.text, True, self.show_text())
+
+        def show_text(self):
+            if self.hovered:
+                string = 'bob'
+                return string
+            else:
+                return (0, 0, 0)
+
+        def set_button(self):
+            self.set_rend()
+            self.button = self.rend.get_button()
+            self.rect.topleft = self.pos
 
 
 # --------------------- CLASSES------------------------
