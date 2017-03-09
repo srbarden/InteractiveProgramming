@@ -62,7 +62,7 @@ while date < enddate:
         hillary_points[date_pretty] = 'Washington, DC'
     date += day
 
-print(hillary_points['2016-05-13'])  # Brooklyn
+# print(hillary_points['2016-05-13'])  # Brooklyn
 
 locations = {}
 for i in hillary_points:
@@ -75,7 +75,7 @@ def distance(a, b):
     geolocator = Nominatim()
 
     try:
-        locate_a = geolocator.geocode(a, timeout = 50)
+        locate_a = geolocator.geocode(a, timeout=50)
     except GeocoderTimedOut:
         print("timed out")
     if locate_a is None:
@@ -83,13 +83,14 @@ def distance(a, b):
     latlong_a = (locate_a.latitude, locate_a.longitude)
     sleep(1)
 
-    locate_b = geolocator.geocode(b, timeout = 50)
+    locate_b = geolocator.geocode(b, timeout=50)
     if locate_b is None:
         locate_b = 'Washington, DC'
     latlong_b = (locate_b.latitude, locate_b.longitude)
 
     distance = vincenty(latlong_a, latlong_b).miles
     return distance
+
 
 # -------------DIST B/T HILLARY AND MICHELLE---------------------
 distances = {}
@@ -100,12 +101,13 @@ for i in locations:
     else:
         d = distance(pair[0], pair[1])  # ru ndistance function between two locaitons
         distances[i] = d
-        print('not washington')
+        # print('not washington')
         sleep(1)
 
 
 print('done with distances')
 # ------------------ DRAWING -------------------------------------
+
 
 def make_figure():
     pygame.init()
@@ -123,7 +125,6 @@ def make_figure():
     # maps hypothetical times and distance between three people
     # distances12 = {1: 200, 2: 50, 3: 50, 4: 0, 5: 100, 6: 0}
 
-
     # this keeps the window open until you press the x
     done = False
     clock = pygame.time.Clock()
@@ -140,7 +141,7 @@ def make_figure():
 
 # --------- DRAWING LINES AND POINTS--------------------------------
         for key in distances:
-            dist = distances[key]
+            dist = 0.1*distances[key]  #scale down distances
 
             point1 = mid - 0.5*dist
             point2 = mid + 0.5*dist
@@ -148,11 +149,22 @@ def make_figure():
             point1 = mid - 0.5*dist  # calculates points for person 1
             point2 = mid + 0.5*dist  # calculates points for person 2
 
-            pointlist1.append((key.timestamp(), point1))
-            pointlist2.append((key.timestamp(), point2))
+            year = int(key[0:4])
+            month = int(key[5:7])
+            day = int(key[8:10])
+            t = datetime.date(year, month, day)
 
-        pygame.draw.lines(figure, red, False, pointlist1, 2)
+            x = (t - datetime.date(1990, 1 ,1)).total_seconds()
+
+            pointlist1.append((x/1000000, point1))
+            pointlist2.append((x/1000000, point2))
+
+        pointlist1.sort()
+        pointlist2.sort()
+
+        pygame.draw.lines(figure, blue, False, pointlist1, 2)
         pygame.draw.lines(figure, green, False, pointlist2, 2)
+
 
         if dist == 0:
             meetings.append((key, mid))
