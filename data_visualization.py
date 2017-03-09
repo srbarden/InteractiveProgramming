@@ -158,89 +158,90 @@ def make_figure():
     # if event.type == pygame.MOUSEBUTTONDOWN:
 
 # --------------------- CLASSES------------------------
+#
+#
+# class TimelineModel:
+#     '''
+#     Encode the timeline display state
+#     '''
+#     def __init__(self):
+#         self.timelines = []
+#         for x in range():
+#             timeline = Line()
+#             self.timeline.append(timeline)
+#         self.meeting = Meeting()
+#
 
 
-class TimelineModel:
-    '''
-    Encode the timeline display state
-    '''
-    def __init__(self):
-        self.timelines = []
-        for x in range():
-            timeline = Line()
-            self.timeline.append(timeline)
-        self.meeting = Meeting()
-
-
-class Line:
-    '''
-    Encodes the state of the line in the display
-    '''
-    def __init__(self, color, height, width, x, y):
-        self.color = color
-        self.height = height
-        self.width = width
-        self.x = x
-        self.y = y
-
-
-class Meeting:
-    '''
-    Encodes the state the meeting point circles in the game
-    '''
-    def __init__(self, color, height, width, x, y):
-        self.color = color
-        self.height = height
-        self.width = width
-        self.x = x
-        self.y = y
-
-
-class PyGameWindowView:
-    '''
-    A view of the timeline display rendered in a Pygame window
-    '''
-    def __init__(self, model, screen):
-        self.model = model
-        self.screen = screen
-
-    def draw(self):
-        self.screen.fill(pygame.Color(255, 255, 255))
-        for meeting in self.model.lines:
-
-
-    mid = int(height/2)
-
-
-    red = (200, 0, 0)
-    green = (0, 200, 0)
-    blue = (0, 0, 200)
-    white = (255, 255, 255)
-    black = (0, 0, 0)
-
-
-class PyGameMouseController:
-    '''
-    Encodes the mouse controller for it to show meeting point
-    when mouse scrolls over it
-    '''
-
-if __name__ == '__main__':
-    pygame.init()
-    size = (1200, 800)
-    screen = pygame.display.set_mode(size)
-    model = TimelineModel()
-    view = PyGameWindowView(model, screen)
-    controller = PyGameMouseController(model)
-
-    running = True
-
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEMOTION:
-                controller.handle_mouse_event(event)
-        view.draw()
-
-    pygame.quit()
+# class Line:
+#     '''
+#     Encodes the state of the line in the display
+#     '''
+#     def __init__(self, color, height, width, x, y):
+#         self.color = color
+#         self.height = height
+#         self.width = width
+#         self.x = x
+#         self.y = y
+#
+#
+# class Meeting:
+#     '''
+#     Encodes the state the meeting point circles in the game
+#     '''
+#     def __init__(self, color, height, width, x, y):
+#         self.color = color
+#         self.height = height
+#         self.width = width
+#         self.x = x
+#         self.y = y
+#
+#
+# class PyGameWindowView:
+#     '''
+#     A view of the timeline display rendered in a Pygame window
+#     '''
+#     def __init__(self, model, screen):
+#         self.model = model
+#         self.screen = screen
+#
+#     def draw(self):
+#         self.screen.fill(pygame.Color(255, 255, 255))
+#         for meeting in self.model.lines:
+#
+#
+#     mid = int(height/2)
+#
+#
+#     red = (200, 0, 0)
+#     green = (0, 200, 0)
+#     blue = (0, 0, 200)
+#     white = (255, 255, 255)
+#     black = (0, 0, 0)
+#
+#
+# class PyGameMouseController:
+#     '''
+#     Encodes the mouse controller for it to show meeting point
+#     when mouse scrolls over it
+#     '''
+#
+# if __name__ == '__main__':
+#     pygame.init()
+#     size = (1200, 800)
+#     screen = pygame.display.set_mode(size)
+#     model = TimelineModel()
+#     view = PyGameWindowView(model, screen)
+#     controller = PyGameMouseController(model)
+#
+#     running = True
+#
+#     while running:
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 running = False
+#             if event.type == pygame.MOUSEMOTION:
+#                 controller.handle_mouse_event(event)
+#         view.draw()
+#
+#     pygame.quit()
