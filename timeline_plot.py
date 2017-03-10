@@ -11,8 +11,6 @@ import plotly
 import plotly.offline as py
 import cufflinks as cf
 
-import plotly.graph_objs as go
-
 cf.go_offline()
 py.init_notebook_mode()
 
@@ -63,13 +61,13 @@ def dataframe(data):
     return sorted_df
 
 
-# -------------Setting up plot data-------------------------
+# -------------Plotting Data------------------------
 
 m_df = dataframe(mdata)
 h_df = dataframe(hdata)
 fig = {
     'data': [
-        {'x': m_df['Time'], 'y': m_df['Miles from D.C.'],
+        {'x': m_df['Time'], 'y': -m_df['Miles from D.C.'],
          'text': m_df['Title'],
          'name': 'Michelle Obama'},
         {'x': h_df['Time'], 'y': h_df['Miles from D.C.'],
@@ -82,6 +80,6 @@ fig = {
     }
 }
 
-py.plot(fig, filename='lines.html')
+py.plot(fig, filename='timelines.html')
 
 # py.plot({'data': [{'x': mm['Time'], 'y': mm['Miles from D.C.'], 'text': mm['Title']}]}, filename='lines.html')
