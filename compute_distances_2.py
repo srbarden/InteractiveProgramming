@@ -50,7 +50,7 @@ def shorter_date(news_articles):
     return news_articles
 
 
-# get the updated data structure from shorter_date
+# get the updated data list from shorter_date
 mich = shorter_date(michelle_news)
 hills = shorter_date(hillary_news)
 
@@ -75,6 +75,7 @@ def distance(news_articles):
     return news_articles
 
 
+# the update data list from distance
 mich_news = distance(mich)
 hills_news = distance(hills)
 
