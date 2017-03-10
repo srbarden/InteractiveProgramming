@@ -22,50 +22,66 @@ with open('michelle_locations.json', 'r') as json_data:
 with open('hillary_locations.json', 'r') as json_data:
     hdata = json.load(json_data)
 
-# print(michelle_data)
+# -----------Putting Data Into A DataFrame--------------
+'''
+function dataframe takes all the data out from the current
+data structure, and sets it up properly to plot on plotly
+'''
 
-shortdate = []
-distance = []
-description = []
-location = []
-title = []
-for phrase in mdata:
-    for article in phrase:
-        shortdate.append(article['shortdate'])
-        distance.append(article['distance'])
-        location.append(article['location'])
-        description.append(article['description'])
-        title.append(article['title'])
 
-# shortdate = [i for i, data in enumerate(shortdate)]
-use_date = [d.date() for d in pd.to_datetime(shortdate)]
+def dataframe(data):
+    # great empty lists to store data
+    shortdate = []
+    distance = []
+    description = []
+    location = []
+    title = []
+    # loop through the lists
+    for phrase in data:
+        # loop through the lists
+        for article in phrase:
+            # extract the data from the dictionaries
+            shortdate.append(article['shortdate'])
+            distance.append(article['distance'])
+            location.append(article['location'])
+            description.append(article['description'])
+            title.append(article['title'])
 
-m_df = pd.DataFrame(
-    {'Time': use_date,
-     'Location': location,
-     'Miles from D.C.': distance,
-     'Description': description,
-     'Title': title})
+    # convert shortdate from string to datetime
+    use_date = [d.date() for d in pd.to_datetime(shortdate)]
+    # alternative: shortdate = [i for i, data in enumerate(shortdate)]
+    # set it up as a dataframe
+    df = pd.DataFrame(
+        {'Time': use_date,
+         'Location': location,
+         'Miles from D.C.': distance,
+         'Description': description,
+         'Title': title})
 
-# print(m_df)
+    # sort the dataframe by the date, most recent to least
+    sorted_df = df.sort_values(['Time'], ascending=True)
+    return sorted_df
 
-mm = m_df.sort_values(['Time'], ascending=True)
 
-print(mm['Time'])
+# -------------Setting up plot data-------------------------
 
-# mm.iplot(kind='scatter', title='trying')
+m_df = dataframe(mdata)
+h_df = dataframe(hdata)
+fig = {
+    'data': [
+        {'x': m_df['Time'], 'y': m_df['Miles from D.C.'],
+         'text': m_df['Title'],
+         'name': 'Michelle Obama'},
+        {'x': h_df['Time'], 'y': h_df['Miles from D.C.'],
+         'text': h_df['Title'],
+         'name': 'Hillary Clinton'}
+    ],
+    'layout': {
+        'xaxis': {'title': 'Year'},
+        'yaxis': {'title': "Distance from D.C."}
+    }
+}
 
-# mm.offline.plot(kind='scatter', filename='trying')
-py.plot({'data': [{'x': mm['Time'], 'y': mm['Miles from D.C.'], 'text': mm['Title']}]}, filename='lines.html')
-# for phrase in mdata:
-#         sorted_x = OrderedDict(sorted(phrase.items(), key=itemgetter(0)))
-#         print(sorted_x)
-# for phrase in mdata:
-#     for article in phrase:
-#         k = sorted(article.items(), key=lambda x: article['shortdate'])
-#     # m_df = pd.DataFrame(phrase)
-#     print(k)
+py.plot(fig, filename='lines.html')
 
-# for phrase in hdata:
-#     h_df = pd.DataFrame(phrase)
-#     print(h_df)
+# py.plot({'data': [{'x': mm['Time'], 'y': mm['Miles from D.C.'], 'text': mm['Title']}]}, filename='lines.html')
